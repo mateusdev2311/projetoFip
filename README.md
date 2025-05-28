@@ -107,6 +107,32 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 
 Contribuições são bem-vindas! Por favor, leia o arquivo CONTRIBUTING.md para detalhes sobre nosso código de conduta e o processo para enviar pull requests.
 
+## 📚 Referências Bibliográficas
+
+1. **Protocolo de Manchester**
+   - Mackway-Jones, K., et al. (2014). Emergency Triage: Manchester Triage Group. 3rd Edition. Wiley-Blackwell.
+
+2. **Sinais Vitais em Pediatria**
+   - Fleming, S., et al. (2011). Normal ranges of heart rate and respiratory rate in children from birth to 18 years of age: a systematic review of observational studies. The Lancet, 377(9770), 1011-1018.
+
+3. **Pressão Arterial por Gênero**
+   - Whelton, P. K., et al. (2018). 2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults. Journal of the American College of Cardiology, 71(19), e127-e248.
+
+4. **Escala de Dor**
+   - Melzack, R. (1975). The McGill Pain Questionnaire: major properties and scoring methods. Pain, 1(3), 277-299.
+
+5. **Medicamentos e Sinais Vitais**
+   - Brunton, L. L., et al. (2018). Goodman & Gilman's: The Pharmacological Basis of Therapeutics. 13th Edition. McGraw-Hill Education.
+
+6. **Triagem em Emergência**
+   - FitzGerald, G., et al. (2010). Emergency department triage revisited. Emergency Medicine Journal, 27(2), 86-92.
+
+7. **Saturação de Oxigênio**
+   - Jubran, A. (2015). Pulse oximetry. Critical Care, 19(1), 272.
+
+8. **Níveis de Consciência**
+   - Teasdale, G., & Jennett, B. (1974). Assessment of coma and impaired consciousness. The Lancet, 304(7872), 81-84.
+
 ## 📞 Suporte
 
 Para suporte, por favor abra uma issue no repositório do projeto. 
