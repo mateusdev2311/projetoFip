@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Triagem Inteligente para Unidades de Saúde</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏥 Sistema de Triagem Inteligente</h1>
+            <p class="subtitle">Unidades de Saúde em Áreas Remotas</p>
+        </header>
+
+        <main class="main-content">
+            <div class="card form-card">
+                <h2>📋 Formulário de Triagem Completa</h2>
+                <form id="triagemForm" class="form">
+                    <!-- Dados Pessoais -->
+                    <div class="section">
+                        <h3>👤 Dados Pessoais</h3>
+                        <div class="form-group">
+                            <label for="nomeCompleto">Nome Completo do Paciente *</label>
+                            <input type="text" id="nomeCompleto" name="nomeCompleto" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="idade">Idade (anos) *</label>
+                                <input type="number" id="idade" name="idade" min="0" max="120" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="genero">Gênero *</label>
+                                <select id="genero" name="genero" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="feminino">Feminino</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="peso">Peso (kg)</label>
+                                <input type="number" id="peso" name="peso" min="1" max="300" step="0.1">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="altura">Altura (cm)</label>
+                                <input type="number" id="altura" name="altura" min="30" max="250">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sinais Vitais -->
+                    <div class="section">
+                        <h3>❤️ Sinais Vitais</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="frequenciaCardiaca">Frequência Cardíaca (bpm) *</label>
+                                <input type="number" id="frequenciaCardiaca" name="frequenciaCardiaca" min="30" max="250" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="frequenciaRespiratoria">Frequência Respiratória (rpm) *</label>
+                                <input type="number" id="frequenciaRespiratoria" name="frequenciaRespiratoria" min="5" max="60" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pressaoSistolica">Pressão Arterial Sistólica (mmHg) *</label>
+                                <input type="number" id="pressaoSistolica" name="pressaoSistolica" min="50" max="250" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pressaoDiastolica">Pressão Arterial Diastólica (mmHg) *</label>
+                                <input type="number" id="pressaoDiastolica" name="pressaoDiastolica" min="30" max="150" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="temperatura">Temperatura Corporal (°C) *</label>
+                                <input type="number" id="temperatura" name="temperatura" step="0.1" min="30" max="45" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="saturacaoOxigenio">Saturação de Oxigênio - SpO2 (%) *</label>
+                                <input type="number" id="saturacaoOxigenio" name="saturacaoOxigenio" min="50" max="100" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nível de Consciência e Estado Mental -->
+                    <div class="section">
+                        <h3>🧠 Nível de Consciência</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nivelConsciencia">Nível de Consciência *</label>
+                                <select id="nivelConsciencia" name="nivelConsciencia" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="alerta">Alerta (A)</option>
+                                    <option value="resposta-verbal">Resposta Verbal (V)</option>
+                                    <option value="resposta-dor">Resposta à Dor (D)</option>
+                                    <option value="inconsciente">Inconsciente (I)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orientacao">Orientação no Tempo/Espaço</label>
+                                <select id="orientacao" name="orientacao">
+                                    <option value="">Selecione...</option>
+                                    <option value="orientado">Totalmente Orientado</option>
+                                    <option value="parcialmente">Parcialmente Orientado</option>
+                                    <option value="desorientado">Desorientado</option>
+                                    <option value="nao-avaliavel">Não Avaliável</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Avaliação da Dor -->
+                    <div class="section">
+                        <h3>⚡ Avaliação da Dor</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="intensidadeDor">Intensidade da Dor (0-10)</label>
+                                <input type="range" id="intensidadeDor" name="intensidadeDor" min="0" max="10" value="0" class="pain-slider">
+                                <div class="pain-scale">
+                                    <span>0 - Sem dor</span>
+                                    <span id="painValue">0</span>
+                                    <span>10 - Dor insuportável</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="localizacaoDor">Localização da Dor</label>
+                                <input type="text" id="localizacaoDor" name="localizacaoDor" placeholder="Ex: peito, abdômen, cabeça...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="caracteristicaDor">Característica da Dor</label>
+                            <select id="caracteristicaDor" name="caracteristicaDor">
+                                <option value="">Selecione...</option>
+                                <option value="pulsatil">Pulsátil/Latejante</option>
+                                <option value="queimacao">Queimação</option>
+                                <option value="pontada">Pontada/Fisgada</option>
+                                <option value="pressao">Pressão/Aperto</option>
+                                <option value="colica">Cólica</option>
+                                <option value="continua">Contínua</option>
+                                <option value="intermitente">Intermitente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Queixa Principal e Sintomas -->
+                    <div class="section">
+                        <h3>🩺 Queixa Principal e Sintomas</h3>
+                        <div class="form-group">
+                            <label for="queixaPrincipal">Queixa Principal *</label>
+                            <textarea id="queixaPrincipal" name="queixaPrincipal" rows="3" placeholder="Descreva o principal motivo da consulta..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tempoSintomas">Tempo de Início dos Sintomas *</label>
+                            <select id="tempoSintomas" name="tempoSintomas" required>
+                                <option value="">Selecione...</option>
+                                <option value="menos-1h">Menos de 1 hora</option>
+                                <option value="1-6h">1 a 6 horas</option>
+                                <option value="6-24h">6 a 24 horas</option>
+                                <option value="1-7d">1 a 7 dias</option>
+                                <option value="mais-7d">Mais de 7 dias</option>
+                                <option value="cronico">Crônico</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Sintomas Associados</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="nausea">
+                                    <span>Náusea/Vômito</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="tontura">
+                                    <span>Tontura/Vertigem</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="falta-ar">
+                                    <span>Falta de Ar</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="palpitacao">
+                                    <span>Palpitação</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="sudorese">
+                                    <span>Sudorese</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="fraqueza">
+                                    <span>Fraqueza</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="convulsao">
+                                    <span>Convulsão</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="sintomas" value="sangramento">
+                                    <span>Sangramento</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Histórico Médico -->
+                    <div class="section">
+                        <h3>📋 Histórico Médico</h3>
+                        <div class="form-group">
+                            <label>Doenças Preexistentes</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="hipertensao">
+                                    <span>Hipertensão</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="diabetes">
+                                    <span>Diabetes</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="cardiaca">
+                                    <span>Doença Cardíaca</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="respiratoria">
+                                    <span>Doença Respiratória</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="renal">
+                                    <span>Doença Renal</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="epilepsia">
+                                    <span>Epilepsia</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="cancer">
+                                    <span>Câncer</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="doencas" value="nenhuma">
+                                    <span>Nenhuma conhecida</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="medicamentosUso">Medicamentos em Uso</label>
+                            <textarea id="medicamentosUso" name="medicamentosUso" rows="3" placeholder="Liste os medicamentos em uso, incluindo dose e frequência..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alergias">Alergias Conhecidas</label>
+                            <textarea id="alergias" name="alergias" rows="2" placeholder="Liste as alergias conhecidas..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Informações Adicionais -->
+                    <div class="section">
+                        <h3>ℹ️ Informações Adicionais</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gestante">Gestante (se aplicável)</label>
+                                <select id="gestante" name="gestante">
+                                    <option value="">Não se aplica</option>
+                                    <option value="nao">Não</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="suspeita">Suspeita</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cirurgiaRecente">Cirurgia Recente (últimos 30 dias)</label>
+                                <select id="cirurgiaRecente" name="cirurgiaRecente">
+                                    <option value="nao">Não</option>
+                                    <option value="sim">Sim</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observacoes">Observações Adicionais</label>
+                            <textarea id="observacoes" name="observacoes" rows="3" placeholder="Informações relevantes não mencionadas acima..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Botão de Análise -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            🔍 Analisar Prioridade Completa
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Seção de Resultado -->
+            <div class="card result-card" id="resultSection">
+                <h2>🎯 Resultado da Triagem</h2>
+                <div class="priority-display" id="priorityDisplay">
+                    <div class="priority-icon">⏳</div>
+                    <div class="priority-text">Aguardando análise...</div>
+                    <div class="priority-subtitle">Preencha o formulário e clique em "Analisar Prioridade Completa"</div>
+                </div>
+                
+                <!-- Legenda do Protocolo de Manchester -->
+                <div class="legend" id="legend">
+                    <h3>📚 Protocolo de Manchester - Classificação de Risco</h3>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <div class="color-indicator red"></div>
+                            <div class="legend-content">
+                                <strong>🔴 Vermelho - Emergência</strong>
+                                <span>Atendimento imediato (0 minutos)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="legend-item">
+                            <div class="color-indicator orange"></div>
+                            <div class="legend-content">
+                                <strong>🟠 Laranja - Muito Urgente</strong>
+                                <span>Até 10 minutos</span>
+                            </div>
+                        </div>
+                        
+                        <div class="legend-item">
+                            <div class="color-indicator yellow"></div>
+                            <div class="legend-content">
+                                <strong>🟡 Amarelo - Urgente</strong>
+                                <span>Até 60 minutos</span>
+                            </div>
+                        </div>
+                        
+                        <div class="legend-item">
+                            <div class="color-indicator green"></div>
+                            <div class="legend-content">
+                                <strong>🟢 Verde - Pouco Urgente</strong>
+                                <span>Até 120 minutos</span>
+                            </div>
+                        </div>
+                        
+                        <div class="legend-item">
+                            <div class="color-indicator blue"></div>
+                            <div class="legend-content">
+                                <strong>🔵 Azul - Não Urgente</strong>
+                                <span>Até 240 minutos</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="protocol-info">
+                        <p><strong>Referência:</strong> Protocolo de Manchester, padrão oficial adotado no Brasil desde 2008 em unidades de saúde federais e hospitais universitários (EBSERH).</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 Sistema de Triagem Inteligente - Protocolo de Manchester Avançado</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
