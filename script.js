@@ -1,4 +1,4 @@
-// Sistema de Triagem Inteligente - JavaScript Avançado
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('triagemForm');
     const priorityDisplay = document.getElementById('priorityDisplay');
@@ -62,21 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Simula tempo de processamento (2 segundos para análise mais complexa)
-        setTimeout(() => {
-            const resultado = calcularPrioridadeAvancada(dadosPaciente);
-            exibirResultadoCompleto(resultado, dadosPaciente);
-            
-            // Remove estado de loading
-            button.classList.remove('loading');
-            button.disabled = false;
-            
-            // Scroll suave para o resultado
-            document.getElementById('resultSection').scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }, 2000);
+        // Salvar triagem no backend
+        salvarTriagemNoBackend(dadosPaciente, button);
     }
     
     // Coleta dados completos do formulário
@@ -181,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (dados.frequenciaCardiaca < 60 || dados.frequenciaCardiaca > 100) {
                 validacoes.push('Frequência cardíaca fora do normal para adulto (60-100 bpm)');
             }
-        }
+        } 
 
         // Frequência Respiratória por faixa etária
         if (idade < 1) { // Recém-nascido
@@ -904,9 +891,171 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
     });
     
+    // ==================== INTEGRAÇÃO COM BACKEND ====================
+    
+    // Função para salvar triagem no backend
+    async function salvarTriagemNoBackend(dadosPaciente, button) {
+        try {
+            const response = await fetch('http://localhost:3000/api/triagens', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dadosPaciente)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Usar resultado do backend
+                const resultado = data.data.resultado;
+                exibirResultadoCompleto(resultado, dadosPaciente);
+                
+                // Mostrar mensagem de sucesso
+                mostrarMensagemSucesso('Triagem salva com sucesso! ID: ' + data.data.id.substring(0, 8) + '...');
+                
+                // Adicionar botão para gerenciar triagens
+                adicionarBotaoGerenciar();
+            } else {
+                throw new Error(data.message || 'Erro ao salvar triagem');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar triagem:', error);
+            
+            // Fallback: usar cálculo local se o backend falhar
+            const resultado = calcularPrioridadeAvancada(dadosPaciente);
+            exibirResultadoCompleto(resultado, dadosPaciente);
+            
+            mostrarMensagemErro('Erro ao conectar com o servidor. Resultado calculado localmente.');
+        } finally {
+            // Remove estado de loading
+            button.classList.remove('loading');
+            button.disabled = false;
+            
+            // Scroll suave para o resultado
+            document.getElementById('resultSection').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+
+    // Função para mostrar mensagem de sucesso
+    function mostrarMensagemSucesso(mensagem) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success';
+        alertDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        `;
+        alertDiv.innerHTML = `
+            <strong>✅ Sucesso!</strong><br>
+            ${mensagem}
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        // Remover após 5 segundos
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 5000);
+    }
+
+    // Função para mostrar mensagem de erro
+    function mostrarMensagemErro(mensagem) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-error';
+        alertDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        `;
+        alertDiv.innerHTML = `
+            <strong>⚠️ Aviso!</strong><br>
+            ${mensagem}
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        // Remover após 7 segundos
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 7000);
+    }
+
+    // Função para adicionar botão de gerenciar triagens
+    function adicionarBotaoGerenciar() {
+        const resultSection = document.getElementById('resultSection');
+        const existingButton = resultSection.querySelector('.btn-gerenciar');
+        
+        if (!existingButton) {
+            const buttonDiv = document.createElement('div');
+            buttonDiv.style.cssText = `
+                text-align: center;
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid rgba(255,255,255,0.3);
+            `;
+            buttonDiv.innerHTML = `
+                <a href="gerenciar.html" class="btn btn-primary" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 12px 24px;
+                    background: #1976d2;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1976d2'">
+                    📊 Gerenciar Triagens
+                </a>
+            `;
+            
+            resultSection.appendChild(buttonDiv);
+        }
+    }
+
+    // Adicionar animação CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .alert {
+            font-family: inherit;
+        }
+    `;
+    document.head.appendChild(style);
+
     // Inicialização
     console.log('Sistema de Triagem Inteligente Avançado inicializado com sucesso!');
     console.log('Protocolo de Manchester expandido implementado para classificação de risco.');
+    console.log('Integração com backend ativa.');
     
     // Atualizar valor inicial do slider
     updatePainSliderColor(painSlider.value);
