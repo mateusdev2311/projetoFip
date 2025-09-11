@@ -1,7 +1,13 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 // Configuração de conexão com MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://triagem:triagem123@triagem.zfacnns.mongodb.net/?retryWrites=true&w=majority&appName=triagem';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    console.error('❌ Erro: MONGODB_URI não está definida no arquivo .env');
+    process.exit(1);
+}
 
 // Opções de conexão
 const options = {
