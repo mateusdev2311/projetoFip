@@ -143,5 +143,3 @@ module.exports = {
     HistoricoTriagem,
     Configuracao
 };
-
-

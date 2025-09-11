@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
 
 // Configuração de conexão com MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sistema-triagem';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://triagem:triagem123@triagem.zfacnns.mongodb.net/?retryWrites=true&w=majority&appName=triagem';
 
 // Opções de conexão
 const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     maxPoolSize: 10, // Manter até 10 conexões no pool
     serverSelectionTimeoutMS: 5000, // Manter tentando enviar operações por 5 segundos
     socketTimeoutMS: 45000, // Fechar sockets após 45 segundos de inatividade
-    bufferMaxEntries: 0, // Desabilitar mongoose buffering
-    bufferCommands: false, // Desabilitar mongoose buffering
 };
 
 // Função para conectar ao MongoDB
