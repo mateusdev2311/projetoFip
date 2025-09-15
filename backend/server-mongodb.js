@@ -20,6 +20,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Swagger
+const swaggerUi = require('swagger-ui-express');
+const { swaggerSpec } = require('./swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Servir arquivos estáticos
 app.use(express.static('../'));
 
@@ -75,9 +80,15 @@ app.get('/api/triagens', async (req, res) => {
         
         const result = await allQuery('triagem', filter, options);
         
+        // Normalizar documentos para expor `id` no lugar de `_id`
+        const data = (result.data || []).map(doc => {
+            const { _id, __v, ...rest } = doc;
+            return { id: _id, ...rest };
+        });
+        
         res.json({
             success: true,
-            data: result.data,
+            data,
             pagination: result.pagination
         });
     } catch (error) {
@@ -103,9 +114,10 @@ app.get('/api/triagens/:id', async (req, res) => {
             });
         }
         
+        const { _id, __v, ...rest } = triagem.toObject ? triagem.toObject() : triagem;
         res.json({
             success: true,
-            data: triagem
+            data: { id: _id, ...rest }
         });
     } catch (error) {
         console.error('Erro ao buscar triagem:', error);

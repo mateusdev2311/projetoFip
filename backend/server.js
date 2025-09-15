@@ -20,6 +20,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Swagger
+const swaggerUi = require('swagger-ui-express');
+const { swaggerSpec } = require('./swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Servir arquivos estáticos
 app.use(express.static('../'));
 
