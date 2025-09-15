@@ -37,6 +37,25 @@ const swaggerDefinition = {
                     dataAtualizacao: { type: 'string', format: 'date-time' }
                 }
             },
+            TriagemPagedResponse: {
+                type: 'object',
+                properties: {
+                    success: { type: 'boolean', example: true },
+                    data: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Triagem' }
+                    },
+                    pagination: {
+                        type: 'object',
+                        properties: {
+                            page: { type: 'integer', example: 1 },
+                            limit: { type: 'integer', example: 10 },
+                            total: { type: 'integer', example: 57 },
+                            pages: { type: 'integer', example: 6 }
+                        }
+                    }
+                }
+            },
             TriagemInput: {
                 type: 'object',
                 required: [
@@ -55,6 +74,14 @@ const swaggerDefinition = {
                     nivelConsciencia: { type: 'string' },
                     queixaPrincipal: { type: 'string' },
                     tempoSintomas: { type: 'string' }
+                }
+            },
+            ErrorResponse: {
+                type: 'object',
+                properties: {
+                    success: { type: 'boolean', example: false },
+                    message: { type: 'string', example: 'Erro interno do servidor' },
+                    error: { type: 'string' }
                 }
             }
         }
@@ -77,17 +104,23 @@ const swaggerDefinition = {
                         description: 'Lista de triagens',
                         content: {
                             'application/json': {
-                                schema: {
-                                    type: 'object',
-                                    properties: {
-                                        success: { type: 'boolean' },
-                                        data: { type: 'array', items: { $ref: '#/components/schemas/Triagem' } },
-                                        pagination: { type: 'object' }
+                                schema: { $ref: '#/components/schemas/TriagemPagedResponse' },
+                                examples: {
+                                    exemplo: {
+                                        value: {
+                                            success: true,
+                                            data: [
+                                                { id: 'a1b2', nome: 'Maria', idade: 42, genero: 'feminino', prioridade: 'URGENTE', pontuacao: 55 },
+                                                { id: 'c3d4', nome: 'João', idade: 33, genero: 'masculino', prioridade: 'POUCO URGENTE', pontuacao: 28 }
+                                            ],
+                                            pagination: { page: 1, limit: 10, total: 2, pages: 1 }
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
+                    },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }
             },
             post: {
@@ -97,13 +130,24 @@ const swaggerDefinition = {
                     required: true,
                     content: {
                         'application/json': {
-                            schema: { $ref: '#/components/schemas/TriagemInput' }
+                            schema: { $ref: '#/components/schemas/TriagemInput' },
+                            examples: {
+                                exemplo: {
+                                    value: {
+                                        nome: 'João Silva', idade: 35, genero: 'masculino',
+                                        frequenciaCardiaca: 80, frequenciaRespiratoria: 16, temperatura: 36.5,
+                                        pressaoSistolica: 120, pressaoDiastolica: 80, saturacaoOxigenio: 98,
+                                        nivelConsciencia: 'alerta', queixaPrincipal: 'Dor de cabeça', tempoSintomas: '2 horas'
+                                    }
+                                }
+                            }
                         }
                     }
                 },
                 responses: {
                     201: { description: 'Criado com sucesso' },
-                    400: { description: 'Requisição inválida' }
+                    400: { description: 'Requisição inválida', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }
             }
         },
@@ -114,7 +158,11 @@ const swaggerDefinition = {
                 parameters: [
                     { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
                 ],
-                responses: { 200: { description: 'OK' }, 404: { description: 'Não encontrado' } }
+                responses: {
+                    200: { description: 'OK', content: { 'application/json': { schema: { $ref: '#/components/schemas/Triagem' } } } },
+                    404: { description: 'Não encontrado', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+                }
             },
             put: {
                 summary: 'Atualizar triagem',
@@ -124,20 +172,31 @@ const swaggerDefinition = {
                     required: true,
                     content: { 'application/json': { schema: { $ref: '#/components/schemas/TriagemInput' } } }
                 },
-                responses: { 200: { description: 'Atualizado' }, 404: { description: 'Não encontrado' } }
+                responses: {
+                    200: { description: 'Atualizado' },
+                    404: { description: 'Não encontrado', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+                }
             },
             delete: {
                 summary: 'Excluir triagem',
                 tags: ['Triagens'],
                 parameters: [ { name: 'id', in: 'path', required: true, schema: { type: 'string' } } ],
-                responses: { 200: { description: 'Excluído' }, 404: { description: 'Não encontrado' } }
+                responses: {
+                    200: { description: 'Excluído' },
+                    404: { description: 'Não encontrado', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+                }
             }
         },
         '/api/triagens/stats/geral': {
             get: {
                 summary: 'Estatísticas gerais',
                 tags: ['Triagens'],
-                responses: { 200: { description: 'OK' } }
+                responses: {
+                    200: { description: 'OK' },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+                }
             }
         }
     }

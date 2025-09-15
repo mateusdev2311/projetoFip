@@ -12,6 +12,8 @@ let filtros = {
     data_inicio: '',
     data_fim: ''
 };
+let pendingDeleteId = null;
+let pendingDeleteNome = null;
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
@@ -49,11 +51,15 @@ function configurarEventListeners() {
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('modalTriagem');
         const modalVisualizar = document.getElementById('modalVisualizar');
+        const modalConfirmDelete = document.getElementById('modalConfirmDelete');
         if (event.target === modal) {
             fecharModal();
         }
         if (event.target === modalVisualizar) {
             fecharModalVisualizar();
+        }
+        if (event.target === modalConfirmDelete) {
+            cancelarExclusaoModal();
         }
     });
 }
@@ -502,9 +508,35 @@ async function salvarTriagem() {
 }
 
 function confirmarExclusao(id, nome) {
-    if (confirm(`Tem certeza que deseja excluir a triagem de ${nome}?\n\nEsta ação não pode ser desfeita.`)) {
-        excluirTriagem(id);
+    pendingDeleteId = id;
+    pendingDeleteNome = nome;
+    const msg = document.getElementById('modalDeleteMessage');
+    if (msg) {
+        msg.innerHTML = `Tem certeza que deseja excluir a triagem de <strong>${nome}</strong>?`;
     }
+    const modal = document.getElementById('modalConfirmDelete');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+function cancelarExclusaoModal() {
+    pendingDeleteId = null;
+    pendingDeleteNome = null;
+    const modal = document.getElementById('modalConfirmDelete');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function confirmarExclusaoModal() {
+    if (!pendingDeleteId) {
+        cancelarExclusaoModal();
+        return;
+    }
+    const id = pendingDeleteId;
+    cancelarExclusaoModal();
+    excluirTriagem(id);
 }
 
 async function excluirTriagem(id) {

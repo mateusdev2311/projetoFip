@@ -21,6 +21,9 @@
                     <a href="index.html" class="btn btn-secondary">
                         ← Voltar ao Formulário
                     </a>
+                    <a href="painel.html" class="btn btn-secondary">
+                        📣 Painel de Chamada
+                    </a>
                     <button class="btn btn-primary" onclick="abrirModalNovaTriagem()">
                         ➕ Nova Triagem
                     </button>
@@ -175,6 +178,26 @@
                 <button type="button" class="btn btn-secondary" onclick="fecharModalVisualizar()">
                     Fechar
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="modalConfirmDelete" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar Exclusão</h3>
+                <span class="close" onclick="cancelarExclusaoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" style="margin-bottom: 15px;">
+                    Esta ação não pode ser desfeita.
+                </div>
+                <p id="modalDeleteMessage">Tem certeza que deseja excluir?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cancelarExclusaoModal()">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarExclusaoModal()">Excluir</button>
             </div>
         </div>
     </div>

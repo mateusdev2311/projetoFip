@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Chamada - Sistema de Triagem</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📣 Painel de Chamada de Pacientes</h1>
+            <p class="subtitle">Ordem de atendimento por prioridade</p>
+        </header>
+
+        <div class="crud-container">
+            <div class="crud-header">
+                <h2 class="crud-title">📋 Fila de Atendimento</h2>
+                <div class="btn-group">
+                    <a href="gerenciar.html" class="btn btn-secondary">← Voltar ao Gerenciar</a>
+                    <a href="index.html" class="btn btn-secondary">Formulário</a>
+                    <button class="btn btn-success" id="btnAtualizar">🔄 Atualizar fila</button>
+                    <a href="http://localhost:3000/api-docs" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">📚 Documentação</a>
+                </div>
+            </div>
+
+            <div class="callout" id="chamadaAtual" style="margin-bottom: 20px;">
+                <h3>Paciente em atendimento</h3>
+                <div id="pacienteAtualBox" class="stat-card" style="display: none;">
+                    <div class="stat-number" id="pacienteAtualNome">-</div>
+                    <div class="stat-label" id="pacienteAtualInfo">-</div>
+                </div>
+                <div id="semPacienteAtual" class="alert alert-info">Nenhum paciente chamado ainda.</div>
+                <div style="margin-top: 10px;">
+                    <button class="btn btn-primary" id="btnProximo">▶️ Próximo Paciente</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 class="table-title">👥 Próximos da fila</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ordem</th>
+                                <th>Nome</th>
+                                <th>Prioridade</th>
+                                <th>Pontuação</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyFila">
+                            <tr>
+                                <td colspan="5" class="loading">Carregando fila...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2024 Sistema de Triagem Inteligente</p>
+        </footer>
+    </div>
+
+    <script src="painel.js"></script>
+</body>
+</html>
+
+
