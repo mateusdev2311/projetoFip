@@ -1,138 +1,150 @@
 # 🏥 Sistema de Triagem Inteligente
 
-Sistema avançado de triagem médica baseado no Protocolo de Manchester, desenvolvido para unidades de saúde em áreas remotas.
+Sistema completo de triagem baseado no Protocolo de Manchester, com frontend para coleta/análise, backend com API REST, CRUD de triagens, histórico, estatísticas, documentação Swagger e painel de chamada de pacientes.
 
-## 📋 Descrição
+## 📋 Visão Geral
 
-Este sistema implementa um protocolo de triagem inteligente que avalia pacientes de forma rápida e precisa, classificando-os em diferentes níveis de prioridade baseados em múltiplos parâmetros clínicos. O sistema é especialmente útil para unidades de saúde em áreas remotas, onde recursos médicos podem ser limitados.
+O sistema avalia pacientes utilizando múltiplos parâmetros clínicos e classifica o risco em cores/tempos do Manchester. Possui persistência em banco, filtros, paginação, histórico de alterações e um painel que ordena a fila por prioridade e data.
 
-## ✨ Funcionalidades Principais
+## ✨ Funcionalidades
 
-- **Avaliação Completa de Sinais Vitais**
-  - Frequência cardíaca
-  - Frequência respiratória
-  - Pressão arterial
-  - Temperatura corporal
-  - Saturação de oxigênio
-  - Nível de consciência
+- **Formulário de Triagem Completa** (web)
+  - Sinais vitais: FC, FR, PA (sist/diast e pressão de pulso), Temp, SpO₂, Consciência/Orientação
+  - Dor: intensidade 0-10, localização e característica
+  - Queixa principal, tempo dos sintomas e sintomas associados
+  - Histórico médico: doenças, medicamentos (com alertas de fármacos que alteram sinais), alergias
+  - Informações adicionais: gestação, cirurgia recente, observações
 
-- **Classificação por Idade**
-  - Recém-nascido (< 1 ano)
-  - Lactente (1-2 anos)
-  - Pré-escolar (2-5 anos)
-  - Escolar (5-12 anos)
-  - Adolescente (12-18 anos)
-  - Adulto (> 18 anos)
+- **Classificação de Risco (Manchester)**
+  - 🔴 Emergência (imediato)
+  - 🟠 Muito Urgente (≤ 10 min)
+  - 🟡 Urgente (≤ 60 min)
+  - 🟢 Pouco Urgente (≤ 120 min)
+  - 🔵 Não Urgente (≤ 240 min)
 
-- **Avaliação da Dor**
-  - Escala visual de 0-10
-  - Localização específica
-  - Características da dor
+- **Backend API (Node.js + Express)**
+  - CRUD de triagens: criar, listar (com paginação/filtros), buscar por ID, atualizar e deletar
+  - Estatísticas agregadas e série de triagens por dia
+  - Histórico de alterações por triagem
+  - Documentação Swagger em `/api-docs`
 
-- **Histórico Médico**
-  - Doenças preexistentes
-  - Medicamentos em uso
-  - Alergias conhecidas
+- **Painel de Chamada**
+  - Ordenação automática por prioridade e data
+  - Exibição de próximo paciente, pontuação e prioridade
+  - Atualização de fila
 
-- **Classificação de Prioridade**
-  - 🔴 Vermelho: Emergência (atendimento imediato)
-  - 🟠 Laranja: Muito Urgente (até 10 minutos)
-  - 🟡 Amarelo: Urgente (até 60 minutos)
-  - 🟢 Verde: Pouco Urgente (até 120 minutos)
-  - 🔵 Azul: Não Urgente (até 240 minutos)
+- **Extras técnicos**
+  - Validação em tempo real (frontend)
+  - Regras por idade e gênero para sinais vitais
+  - Cálculo de IMC e pressão de pulso
+  - Fallback: cálculo local caso o backend esteja indisponível
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias
 
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- Protocolo de Manchester
+- Frontend: HTML5, CSS3, JavaScript (ES6+)
+- Backend: Node.js, Express, Swagger UI
+- Banco de dados: SQLite (padrão) e suporte alternativo a MongoDB
 
 ## 📦 Estrutura do Projeto
 
 ```
-projeto/
-├── index.html          # Interface do usuário
-├── styles.css          # Estilos e layout
-├── script.js           # Lógica de triagem
-└── README.md           # Documentação
+projetoFip/
+├── index.html           # Formulário de triagem
+├── gerenciar.html       # (CRUD) Gestão de registros de triagem
+├── painel.html          # Painel de chamada de pacientes
+├── script.js            # Lógica de avaliação + integração API
+├── painel.js            # Lógica do painel de chamada (fila)
+├── styles.css           # Estilos gerais
+├── README.md            # Este documento
+├── README_CRUD.md       # Documentação detalhada do CRUD/API
+└── backend/
+    ├── server.js                    # API com SQLite
+    ├── server-sqlite-backup.js      # Variante SQLite
+    ├── server-mongodb.js            # API com MongoDB
+    ├── swagger.js                   # Definição OpenAPI/Swagger
+    ├── database.js / mongodb-config.js
+    ├── models/                      # Modelos (MongoDB)
+    └── package.json
 ```
 
-## 🚀 Como Usar
+## 🚀 Como Executar
 
-1. Clone o repositório
-2. Abra o arquivo `index.html` em um navegador moderno
-3. Preencha o formulário de triagem com os dados do paciente
-4. Clique em "Analisar Prioridade Completa"
-5. O sistema irá classificar o paciente e exibir recomendações
+1) Instalar dependências do backend
+```bash
+cd backend
+npm install
+```
 
-## 🎯 Características Técnicas
+2) Iniciar servidor (SQLite padrão)
+```bash
+npm start
+# ou
+node server.js
+```
 
-- Interface responsiva
-- Validação em tempo real
-- Análise baseada em múltiplos parâmetros
-- Consideração de faixas etárias
-- Detecção de medicamentos que alteram sinais vitais
-- Cálculo de pressão de pulso
-- Validação por gênero
+3) (Opcional) Iniciar com MongoDB
+```bash
+npm run start:mongodb
+```
 
-## 📊 Parâmetros Clínicos
+4) Acessar
+- Interface de triagem: `http://localhost:3000/index.html`
+- Gerenciamento (CRUD): `http://localhost:3000/gerenciar.html`
+- Painel de chamada: `http://localhost:3000/painel.html`
+- Documentação da API (Swagger): `http://localhost:3000/api-docs`
 
-### Sinais Vitais por Idade
+## 🌐 API – Endpoints Principais
 
-#### Recém-nascido (< 1 ano)
-- Frequência cardíaca: 100-190 bpm
-- Frequência respiratória: 30-60 rpm
-- Pressão sistólica: 60-90 mmHg
+- `GET /api/triagens` – Lista com paginação e filtros (`page`, `limit`, `search`, `prioridade`, `data_inicio`, `data_fim`)
+- `GET /api/triagens/:id` – Detalhe por ID
+- `POST /api/triagens` – Cria triagem (valida campos obrigatórios e calcula prioridade/pontuação)
+- `PUT /api/triagens/:id` – Atualiza triagem (recalcula prioridade/pontuação)
+- `DELETE /api/triagens/:id` – Remove triagem
+- `GET /api/triagens/stats/geral` – Estatísticas agregadas + série (últimos 30 dias no SQLite)
+- `GET /api/triagens/:id/historico` – Histórico de alterações
 
-#### Adulto
-- Frequência cardíaca: 60-100 bpm
-- Frequência respiratória: 12-20 rpm
-- Pressão sistólica: 
-  - Homens: 100-130 mmHg
-  - Mulheres: 90-120 mmHg
+Consulte a especificação completa em `http://localhost:3000/api-docs`.
 
-## ⚠️ Considerações Importantes
+## 🧠 Lógica Clínica Implementada
 
-- O sistema é uma ferramenta de apoio à decisão clínica
-- Sempre confirme os resultados com avaliação médica
-- Mantenha os dados atualizados conforme novas diretrizes
-- Considere fatores locais e específicos da unidade
+- Análise de nível de consciência (A/V/D/I) e orientação
+- Faixas de normalidade por idade (FC, FR, PA) e pressão de pulso
+- Temperatura corporal e estratificação de risco
+- Saturação de oxigênio com limiares críticos
+- Dor (intensidade, localização, característica)
+- Sintomas associados com lista de críticos (ex.: convulsão, sangramento, falta de ar)
+- Doenças preexistentes (críticas e de risco)
+- Fatores especiais: idade extrema, gestação, cirurgia recente
+- IMC (alertas por extremos)
+- Integração de todos os fatores em pontuação e categoria Manchester
+
+## 🔒 Validação e Qualidade
+
+- Validação de campos obrigatórios (frontend e backend)
+- Sanitização e checagem de faixas numéricas
+- Histórico de alterações para auditoria (criação/atualização/remoção)
+
+## ⚠️ Considerações
+
+- Ferramenta de apoio à decisão: não substitui avaliação médica
+- Mantenha as faixas clínicas conforme diretrizes vigentes
+- Em áreas remotas, utilize o painel para priorizar rapidamente o atendimento
 
 ## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+Projeto sob licença MIT.
 
-## 👥 Contribuição
+## 👥 Autores/Contribuição
 
-Contribuições são bem-vindas! Por favor, leia o arquivo CONTRIBUTING.md para detalhes sobre nosso código de conduta e o processo para enviar pull requests.
+Consulte `README_CRUD.md` para a lista de desenvolvedores e detalhes adicionais do CRUD/API.
 
-## 📚 Referências Bibliográficas
+## 📚 Referências (seleção)
 
-1. **Protocolo de Manchester**
-   - Mackway-Jones, K., et al. (2014). Emergency Triage: Manchester Triage Group. 3rd Edition. Wiley-Blackwell.
-
-2. **Sinais Vitais em Pediatria**
-   - Fleming, S., et al. (2011). Normal ranges of heart rate and respiratory rate in children from birth to 18 years of age: a systematic review of observational studies. The Lancet, 377(9770), 1011-1018.
-
-3. **Pressão Arterial por Gênero**
-   - Whelton, P. K., et al. (2018). 2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults. Journal of the American College of Cardiology, 71(19), e127-e248.
-
-4. **Escala de Dor**
-   - Melzack, R. (1975). The McGill Pain Questionnaire: major properties and scoring methods. Pain, 1(3), 277-299.
-
-5. **Medicamentos e Sinais Vitais**
-   - Brunton, L. L., et al. (2018). Goodman & Gilman's: The Pharmacological Basis of Therapeutics. 13th Edition. McGraw-Hill Education.
-
-6. **Triagem em Emergência**
-   - FitzGerald, G., et al. (2010). Emergency department triage revisited. Emergency Medicine Journal, 27(2), 86-92.
-
-7. **Saturação de Oxigênio**
-   - Jubran, A. (2015). Pulse oximetry. Critical Care, 19(1), 272.
-
-8. **Níveis de Consciência**
-   - Teasdale, G., & Jennett, B. (1974). Assessment of coma and impaired consciousness. The Lancet, 304(7872), 81-84.
+- Manchester Triage Group. Emergency Triage (3ª ed.)
+- Fleming, S., et al. (2011). The Lancet – faixas pediátricas
+- Whelton, P. K., et al. (2018). Diretrizes de PA em adultos
+- Teasdale & Jennett (1974). Escala de Coma de Glasgow
 
 ## 📞 Suporte
 
-Para suporte, por favor abra uma issue no repositório do projeto. 
+Abra uma issue no repositório do projeto.

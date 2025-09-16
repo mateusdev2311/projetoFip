@@ -98,8 +98,10 @@ O servidor será iniciado na porta 3000.
 
 ### 3. Acessar o Sistema
 - **Formulário de Triagem**: http://localhost:3000/index.html
-- **Gerenciamento**: http://localhost:3000/gerenciar.html
-- **API**: http://localhost:3000/api/triagens
+- **Gerenciamento (CRUD)**: http://localhost:3000/gerenciar.html
+- **Painel de Chamada**: http://localhost:3000/painel.html
+- **Documentação da API (Swagger)**: http://localhost:3000/api-docs
+- **API Base**: http://localhost:3000/api/triagens
 
 ## 📊 Endpoints da API
 
@@ -143,17 +145,63 @@ Cria uma nova triagem.
 }
 ```
 
+Exemplo (curl):
+```bash
+curl -X POST http://localhost:3000/api/triagens \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "João Silva",
+    "idade": 45,
+    "genero": "masculino",
+    "frequenciaCardiaca": 80,
+    "frequenciaRespiratoria": 16,
+    "temperatura": 36.5,
+    "pressaoSistolica": 120,
+    "pressaoDiastolica": 80,
+    "saturacaoOxigenio": 98,
+    "nivelConsciencia": "alerta",
+    "queixaPrincipal": "Dor no peito",
+    "tempoSintomas": "1-6h"
+  }'
+```
+
 ### PUT /api/triagens/:id
 Atualiza uma triagem existente.
+
+Exemplo (curl):
+```bash
+curl -X PUT http://localhost:3000/api/triagens/SEU_ID \
+  -H "Content-Type: application/json" \
+  -d '{
+    "frequenciaCardiaca": 95,
+    "temperatura": 38.1,
+    "queixaPrincipal": "Cefaleia intensa"
+  }'
+```
 
 ### DELETE /api/triagens/:id
 Remove uma triagem.
 
+Exemplo (curl):
+```bash
+curl -X DELETE http://localhost:3000/api/triagens/SEU_ID
+```
+
 ### GET /api/triagens/stats/geral
 Retorna estatísticas gerais das triagens.
 
+Exemplo (curl):
+```bash
+curl http://localhost:3000/api/triagens/stats/geral
+```
+
 ### GET /api/triagens/:id/historico
 Retorna o histórico de alterações de uma triagem.
+
+Exemplo (curl):
+```bash
+curl http://localhost:3000/api/triagens/SEU_ID/historico
+```
 
 ## 🎯 Classificação de Prioridades
 
@@ -229,6 +277,47 @@ Este projeto foi desenvolvido para fins educacionais e de pesquisa em saúde.
 
 **Sistema de Triagem Inteligente v1.0.0**  
 *Protocolo de Manchester - Padrão oficial adotado no Brasil*
+
+## 🧪 Fluxo completo via curl (exemplo)
+
+```bash
+# 1) Criar triagem e capturar ID
+ID=$(curl -s -X POST http://localhost:3000/api/triagens \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Teste Fluxo",
+    "idade": 40,
+    "genero": "masculino",
+    "frequenciaCardiaca": 90,
+    "frequenciaRespiratoria": 18,
+    "temperatura": 37.2,
+    "pressaoSistolica": 125,
+    "pressaoDiastolica": 82,
+    "saturacaoOxigenio": 97,
+    "nivelConsciencia": "alerta",
+    "queixaPrincipal": "Dor abdominal",
+    "tempoSintomas": "1-6h"
+  }' | powershell -Command "($input | ConvertFrom-Json).data.id")
+
+echo ID criado: $ID
+
+# 2) Buscar por ID
+curl http://localhost:3000/api/triagens/$ID | jq
+
+# 3) Atualizar parcialmente
+curl -X PUT http://localhost:3000/api/triagens/$ID \
+  -H "Content-Type: application/json" \
+  -d '{
+    "temperatura": 38.4,
+    "queixaPrincipal": "Dor abdominal intensa"
+  }' | jq
+
+# 4) Listar com paginação/filtros
+curl "http://localhost:3000/api/triagens?page=1&limit=5&prioridade=URGENTE" | jq
+
+# 5) Deletar
+curl -X DELETE http://localhost:3000/api/triagens/$ID | jq
+```
 
 
 

@@ -145,7 +145,32 @@ const swaggerDefinition = {
                     }
                 },
                 responses: {
-                    201: { description: 'Criado com sucesso' },
+                    201: { 
+                        description: 'Criado com sucesso',
+                        content: {
+                            'application/json': {
+                                examples: {
+                                    exemplo: {
+                                        value: {
+                                            success: true,
+                                            message: 'Triagem criada com sucesso',
+                                            data: {
+                                                id: 'a1b2c3d4',
+                                                nome: 'João Silva',
+                                                prioridade: 'URGENTE',
+                                                pontuacao: 58,
+                                                resultado: {
+                                                    prioridade: 'URGENTE',
+                                                    tempo: 'Até 60 minutos',
+                                                    pontuacao: 58
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     400: { description: 'Requisição inválida', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
                     500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }
@@ -173,7 +198,26 @@ const swaggerDefinition = {
                     content: { 'application/json': { schema: { $ref: '#/components/schemas/TriagemInput' } } }
                 },
                 responses: {
-                    200: { description: 'Atualizado' },
+                    200: { 
+                        description: 'Atualizado',
+                        content: {
+                            'application/json': {
+                                examples: {
+                                    exemplo: {
+                                        value: {
+                                            success: true,
+                                            message: 'Triagem atualizada com sucesso',
+                                            data: {
+                                                id: 'a1b2c3d4',
+                                                prioridade: 'MUITO URGENTE',
+                                                pontuacao: 82
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     404: { description: 'Não encontrado', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
                     500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }
@@ -183,7 +227,18 @@ const swaggerDefinition = {
                 tags: ['Triagens'],
                 parameters: [ { name: 'id', in: 'path', required: true, schema: { type: 'string' } } ],
                 responses: {
-                    200: { description: 'Excluído' },
+                    200: { 
+                        description: 'Excluído',
+                        content: {
+                            'application/json': {
+                                examples: {
+                                    exemplo: {
+                                        value: { success: true, message: 'Triagem deletada com sucesso' }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     404: { description: 'Não encontrado', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
                     500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }
@@ -194,7 +249,74 @@ const swaggerDefinition = {
                 summary: 'Estatísticas gerais',
                 tags: ['Triagens'],
                 responses: {
-                    200: { description: 'OK' },
+                    200: { 
+                        description: 'OK',
+                        content: {
+                            'application/json': {
+                                examples: {
+                                    exemplo: {
+                                        value: {
+                                            success: true,
+                                            data: {
+                                                estatisticas: {
+                                                    total_triagens: 123,
+                                                    emergencias: 5,
+                                                    muito_urgentes: 18,
+                                                    urgentes: 60,
+                                                    pouco_urgentes: 30,
+                                                    nao_urgentes: 10,
+                                                    pontuacao_media: 48.6,
+                                                    idade_media: 41.2
+                                                },
+                                                triagens_por_dia: [
+                                                    { data: '2024-10-01', quantidade: 7 },
+                                                    { data: '2024-10-02', quantidade: 4 }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+                }
+            }
+        },
+        '/api/triagens/{id}/historico': {
+            get: {
+                summary: 'Histórico de alterações por triagem',
+                tags: ['Triagens'],
+                parameters: [
+                    { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
+                ],
+                responses: {
+                    200: {
+                        description: 'OK',
+                        content: {
+                            'application/json': {
+                                examples: {
+                                    exemplo: {
+                                        value: {
+                                            success: true,
+                                            data: [
+                                                {
+                                                    id: 1,
+                                                    triagem_id: 'a1b2c3d4',
+                                                    acao: 'CRIACAO',
+                                                    dados_anteriores: null,
+                                                    dados_novos: { nome: 'Maria' },
+                                                    usuario: 'sistema',
+                                                    data_alteracao: '2024-10-01T10:00:00Z'
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    404: { description: 'Não encontrado', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
                     500: { description: 'Erro interno', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }
             }
