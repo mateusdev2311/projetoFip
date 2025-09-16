@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Triagem</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📈 Dashboard de Triagens</h1>
+            <div class="btn-group">
+                <a href="index.html" class="btn btn-secondary">Formulário</a>
+                <a href="gerenciar.html" class="btn btn-secondary">Gerenciar</a>
+                <a href="painel.html" class="btn btn-secondary">Painel</a>
+                <a href="http://localhost:3000/api-docs" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">API Docs</a>
+            </div>
+        </header>
+
+        <div class="crud-container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalTriagens">-</div>
+                    <div class="stat-label">Total de triagens (30 dias)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pontuacaoMedia">-</div>
+                    <div class="stat-label">Pontuação média</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="idadeMedia">-</div>
+                    <div class="stat-label">Idade média</div>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Triagens por dia</h3>
+                    <canvas id="chartPorDia" height="120"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Distribuição por prioridade</h3>
+                    <canvas id="chartPrioridade" height="120"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Distribuição por gênero</h3>
+                    <canvas id="chartGenero" height="120"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Faixas etárias</h3>
+                    <canvas id="chartFaixaEtaria" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2024 Sistema de Triagem Inteligente</p>
+        </footer>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
+
+

@@ -43,7 +43,7 @@ O sistema avalia pacientes utilizando múltiplos parâmetros clínicos e classif
 
 - Frontend: HTML5, CSS3, JavaScript (ES6+)
 - Backend: Node.js, Express, Swagger UI
-- Banco de dados: SQLite (padrão) e suporte alternativo a MongoDB
+- Banco de dados: MongoDB (padrão)
 
 ## 📦 Estrutura do Projeto
 
@@ -75,22 +75,16 @@ cd backend
 npm install
 ```
 
-2) Iniciar servidor (SQLite padrão)
+2) Iniciar servidor (MongoDB padrão)
 ```bash
 npm start
-# ou
-node server.js
 ```
 
-3) (Opcional) Iniciar com MongoDB
-```bash
-npm run start:mongodb
-```
-
-4) Acessar
+3) Acessar
 - Interface de triagem: `http://localhost:3000/index.html`
 - Gerenciamento (CRUD): `http://localhost:3000/gerenciar.html`
 - Painel de chamada: `http://localhost:3000/painel.html`
+- Dashboard (gráficos): `http://localhost:3000/dashboard.html`
 - Documentação da API (Swagger): `http://localhost:3000/api-docs`
 
 ## 🌐 API – Endpoints Principais

@@ -298,6 +298,28 @@ triagemSchema.statics.getStats = async function() {
         }
     ]);
 
+    // Distribuição por gênero
+    const porGenero = await this.aggregate([
+        {
+            $group: {
+                _id: '$genero',
+                quantidade: { $sum: 1 }
+            }
+        }
+    ]);
+
+    // Distribuição por faixas etárias
+    const porFaixaEtaria = await this.aggregate([
+        {
+            $bucket: {
+                groupBy: '$idade',
+                boundaries: [0, 1, 2, 5, 12, 18, 30, 45, 60, 75, 200],
+                default: 'outros',
+                output: { quantidade: { $sum: 1 } }
+            }
+        }
+    ]);
+
     return {
         estatisticas: stats[0] || {
             total_triagens: 0,
@@ -312,7 +334,9 @@ triagemSchema.statics.getStats = async function() {
         triagens_por_dia: triagensPorDia.map(item => ({
             data: item._id,
             quantidade: item.quantidade
-        }))
+        })),
+        distribuicao_genero: porGenero.map(item => ({ genero: item._id, quantidade: item.quantidade })),
+        distribuicao_faixa_etaria: porFaixaEtaria.map(item => ({ faixa: item._id, quantidade: item.quantidade }))
     };
 };
 

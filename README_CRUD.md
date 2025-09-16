@@ -88,15 +88,22 @@ cd backend
 npm install
 ```
 
-### 2. Iniciar o Servidor
-```bash
-cd backend
-node server.js
+### 2. Configurar ambiente (MongoDB)
+Crie um arquivo `.env` em `backend/` com:
+```env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/triagem
 ```
 
-O servidor será iniciado na porta 3000.
+### 3. Iniciar o Servidor (MongoDB)
+```bash
+cd backend
+npm start
+```
 
-### 3. Acessar o Sistema
+O servidor será iniciado na porta definida em `PORT` (padrão 3000).
+
+### 4. Acessar o Sistema
 - **Formulário de Triagem**: http://localhost:3000/index.html
 - **Gerenciamento (CRUD)**: http://localhost:3000/gerenciar.html
 - **Painel de Chamada**: http://localhost:3000/painel.html

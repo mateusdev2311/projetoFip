@@ -819,6 +819,21 @@ textarea:focus {
 .btn-warning { background: #d97706; color: #fff; border-color: transparent; }
 .btn-warning:hover { background: #b45309; }
 
+/* ======================== */
+/* Dashboard (gráficos)     */
+/* ======================== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Garantir que os canvases ocupem bem o card */
+.card canvas {
+    width: 100% !important;
+    height: 260px !important;
+}
+
 .filters-section {
     background: var(--color-surface);
     padding: 20px;

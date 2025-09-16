@@ -496,12 +496,13 @@ function calcularPrioridade(dados) {
         }
     }
     
-    // Determinação da prioridade final
+    // Determinação da prioridade final (ajustada)
     let prioridade;
+    const numCriticos = fatoresCriticos.length;
     
-    if (pontuacao >= 120 || fatoresCriticos.length > 0) {
+    if (pontuacao >= 120 || numCriticos >= 2) {
         prioridade = 'EMERGÊNCIA';
-    } else if (pontuacao >= 80) {
+    } else if (pontuacao >= 80 || numCriticos === 1) {
         prioridade = 'MUITO URGENTE';
     } else if (pontuacao >= 50) {
         prioridade = 'URGENTE';

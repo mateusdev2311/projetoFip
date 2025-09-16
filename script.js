@@ -504,16 +504,17 @@ document.addEventListener('DOMContentLoaded', function() {
             pontuacao += 10;
         });
         
-        // Determinação da prioridade final
+        // Determinação da prioridade final (ajustada)
         let prioridade, cor, tempo, icone, recomendacao;
+        const numCriticos = fatoresCriticos.length;
         
-        if (pontuacao >= 120 || fatoresCriticos.length > 0) {
+        if (pontuacao >= 120 || numCriticos >= 2) {
             prioridade = 'EMERGÊNCIA';
             cor = 'red';
             tempo = 'Atendimento IMEDIATO';
             icone = '🚨';
             recomendacao = 'CRÍTICO: Paciente necessita de atendimento médico imediato. Sinais vitais indicam risco de vida iminente.';
-        } else if (pontuacao >= 80) {
+        } else if (pontuacao >= 80 || numCriticos === 1) {
             prioridade = 'MUITO URGENTE';
             cor = 'orange';
             tempo = 'Até 10 minutos';
