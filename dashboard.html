@@ -6,6 +6,7 @@
     <title>Dashboard - Sistema de Triagem</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -16,6 +17,7 @@
                 <a href="gerenciar.html" class="btn btn-secondary">Gerenciar</a>
                 <a href="painel.html" class="btn btn-secondary">Painel</a>
                 <a href="http://localhost:3000/api-docs" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">API Docs</a>
+                <button id="exportarExcel" class="btn btn-primary">📊 Exportar Excel</button>
             </div>
         </header>
 
@@ -58,6 +60,75 @@
         <footer class="footer">
             <p>© 2024 Sistema de Triagem Inteligente</p>
         </footer>
+    </div>
+
+    <!-- Modal de Exportação -->
+    <div id="modalExportacao" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Exportar Dados para Excel</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <h3>Selecione os dados para exportar:</h3>
+                    
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exportEstatisticas" checked>
+                            <span class="checkmark"></span>
+                            Estatísticas Gerais
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exportPorDia" checked>
+                            <span class="checkmark"></span>
+                            Triagens por Dia
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exportGenero" checked>
+                            <span class="checkmark"></span>
+                            Distribuição por Gênero
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exportFaixaEtaria" checked>
+                            <span class="checkmark"></span>
+                            Distribuição por Faixa Etária
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exportDetalhados" checked>
+                            <span class="checkmark"></span>
+                            Dados Detalhados das Triagens
+                        </label>
+                    </div>
+                    
+                    <div class="period-options">
+                        <h3>Período dos dados:</h3>
+                        <select id="periodoExportacao">
+                            <option value="30">Últimos 30 dias</option>
+                            <option value="7">Últimos 7 dias</option>
+                            <option value="90">Últimos 90 dias</option>
+                            <option value="all">Todos os dados</option>
+                        </select>
+                    </div>
+                    
+                    <div class="export-info">
+                        <p><strong>📁 Nome do arquivo:</strong> <span id="nomeArquivo">dashboard_triagens_2024-01-01.xlsx</span></p>
+                        <p><strong>📊 Formato:</strong> Excel (.xlsx)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelarExport" class="btn btn-secondary">Cancelar</button>
+                <button id="btnConfirmarExport" class="btn btn-primary">
+                    <span id="btnText">📊 Exportar Excel</span>
+                    <span id="btnLoading" style="display: none;">⏳ Gerando...</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="dashboard.js"></script>
