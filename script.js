@@ -1,5 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+    inicializarSidebar();
+    
     const form = document.getElementById('triagemForm');
     const priorityDisplay = document.getElementById('priorityDisplay');
     const painSlider = document.getElementById('intensidadeDor');
@@ -1060,4 +1062,84 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Atualizar valor inicial do slider
     updatePainSliderColor(painSlider.value);
-}); 
+});
+
+// ========================
+// Funções do Sidebar
+// ========================
+
+function inicializarSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mainContent = document.getElementById('mainContent');
+    
+    // Verificar se os elementos existem
+    if (!sidebar || !sidebarToggle || !sidebarOverlay || !mainContent) {
+        console.warn('Elementos do sidebar não encontrados');
+        return;
+    }
+    
+    // Toggle sidebar
+    sidebarToggle.addEventListener('click', () => {
+        toggleSidebar();
+    });
+    
+    // Fechar sidebar clicando no overlay
+    sidebarOverlay.addEventListener('click', () => {
+        fecharSidebar();
+    });
+    
+    // Fechar sidebar com ESC
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+            fecharSidebar();
+        }
+    });
+    
+    // Verificar se deve abrir sidebar automaticamente em desktop
+    // Sidebar inicia fechada em todas as telas
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mainContent = document.getElementById('mainContent');
+    
+    if (sidebar.classList.contains('open')) {
+        fecharSidebar();
+    } else {
+        abrirSidebar();
+    }
+}
+
+function abrirSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mainContent = document.getElementById('mainContent');
+    
+    sidebar.classList.add('open');
+    sidebarToggle.classList.add('open');
+    sidebarToggle.innerHTML = '✕';
+    sidebarOverlay.classList.add('active');
+    
+    // Em desktop, mover o conteúdo principal
+    if (window.innerWidth > 768) {
+        mainContent.classList.add('sidebar-open');
+    }
+}
+
+function fecharSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mainContent = document.getElementById('mainContent');
+    
+    sidebar.classList.remove('open');
+    sidebarToggle.classList.remove('open');
+    sidebarToggle.innerHTML = '☰';
+    sidebarOverlay.classList.remove('active');
+    mainContent.classList.remove('sidebar-open');
+}

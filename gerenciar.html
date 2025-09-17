@@ -5,9 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Triagens - Sistema de Triagem Inteligente</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        (function(d) {
+        window.omniChatQueueId = 162;
+        window.omniChatDomain = 'kentro.atenderbem.com';
+        var s = d.createElement('script');s.async = true;
+        s.src = 'https://statics.atenderbem.com/js/wbchat.min.js';
+        (d.head || d.body).appendChild(s);
+      })(document);
+    </script>
 </head>
 <body>
-    <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>🏥 Sistema de Triagem</h2>
+            <p>Navegação Principal</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <i>📋</i>
+                Formulário de Triagem
+            </a>
+            <a href="gerenciar.html" class="nav-item active">
+                <i>📊</i>
+                Gerenciar Triagens
+            </a>
+            <a href="dashboard.html" class="nav-item">
+                <i>📈</i>
+                Dashboard
+            </a>
+            <a href="painel.html" class="nav-item">
+                <i>📣</i>
+                Painel de Chamada
+            </a>
+            <div class="nav-divider"></div>
+            <a href="http://localhost:3000/api-docs" target="_blank" rel="noopener noreferrer" class="nav-item">
+                <i>📚</i>
+                Documentação API
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <p>© 2024 Sistema de Triagem</p>
+        </div>
+    </div>
+
+    <!-- Overlay para mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Botão para abrir/fechar sidebar -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+    <div class="container main-content-with-sidebar" id="mainContent">
         <header class="header">
             <h1>🏥 Sistema de Triagem Inteligente</h1>
             <p class="subtitle">Gerenciamento de Registros de Triagem</p>
@@ -18,24 +67,12 @@
             <div class="crud-header">
                 <h2 class="crud-title">📋 Gerenciar Triagens</h2>
                 <div class="btn-group">
-                    <a href="index.html" class="btn btn-secondary">
-                        ← Voltar ao Formulário
-                    </a>
-                    <a href="painel.html" class="btn btn-secondary">
-                        📣 Painel de Chamada
-                    </a>
-                    <a href="dashboard.html" class="btn btn-secondary">
-                        📈 Dashboard
-                    </a>
                     <button class="btn btn-primary" onclick="abrirModalNovaTriagem()">
                         ➕ Nova Triagem
                     </button>
                     <button class="btn btn-success" onclick="carregarTriagens()">
                         🔄 Atualizar
                     </button>
-                    <a href="http://localhost:3000/api-docs" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-                        📚 Documentação (Swagger)
-                    </a>
                 </div>
             </div>
 

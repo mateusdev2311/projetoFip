@@ -7,27 +7,50 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>🏥 Sistema de Triagem</h2>
+            <p>Navegação Principal</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item active">
+                <i>📋</i>
+                Formulário de Triagem
+            </a>
+            <a href="gerenciar.html" class="nav-item">
+                <i>📊</i>
+                Gerenciar Triagens
+            </a>
+            <a href="dashboard.html" class="nav-item">
+                <i>📈</i>
+                Dashboard
+            </a>
+            <a href="painel.html" class="nav-item">
+                <i>📣</i>
+                Painel de Chamada
+            </a>
+            <div class="nav-divider"></div>
+            <a href="http://localhost:3000/api-docs" target="_blank" rel="noopener noreferrer" class="nav-item">
+                <i>📚</i>
+                Documentação API
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <p>© 2024 Sistema de Triagem</p>
+        </div>
+    </div>
+
+    <!-- Overlay para mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Botão para abrir/fechar sidebar -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+    <div class="container main-content-with-sidebar" id="mainContent">
         <header class="header">
             <h1>🏥 Sistema de Triagem Inteligente</h1>
             <p class="subtitle">Unidades de Saúde em Áreas Remotas</p>
-            <div style="margin-top: 15px;">
-                <a href="gerenciar.html" style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 10px 20px;
-                    background: rgba(255,255,255,0.2);
-                    color: #1f2937;
-                    text-decoration: none;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    border: 1px solid rgba(65, 55, 55, 0.3);
-                " onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
-                    📊 Gerenciar Triagens
-                </a>
-            </div>
         </header>
 
         <main class="main-content">
