@@ -834,6 +834,53 @@ textarea:focus {
     height: 260px !important;
 }
 
+/* Ajustes de responsividade específicos para dashboard e botões */
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card canvas {
+        height: 200px !important;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .crud-container {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card canvas {
+        height: 160px !important;
+    }
+
+    .btn-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .table-header {
+        padding: 12px 14px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px 6px;
+    }
+}
+
 .filters-section {
     background: var(--color-surface);
     padding: 20px;
