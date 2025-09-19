@@ -853,6 +853,20 @@ textarea:focus {
     .crud-container {
         padding: 12px;
     }
+
+    /* Filtros: campos ocupam largura total */
+    .filters-grid .form-group input,
+    .filters-grid .form-group select,
+    .filters-grid .form-group button {
+        width: 100%;
+    }
+
+    /* Quebra de conteúdo longo nas tabelas */
+    .data-table th,
+    .data-table td {
+        word-break: break-word;
+        white-space: normal;
+    }
 }
 
 @media (max-width: 480px) {
@@ -878,6 +892,22 @@ textarea:focus {
     .data-table th,
     .data-table td {
         padding: 8px 6px;
+    }
+
+    /* Gerenciar: esconder colunas menos críticas em telas muito pequenas */
+    /* ID (1ª) e Gênero (4ª) e Pontuação (6ª) */
+    #triagensTable th:nth-child(1),
+    #triagensTable td:nth-child(1),
+    #triagensTable th:nth-child(4),
+    #triagensTable td:nth-child(4),
+    #triagensTable th:nth-child(6),
+    #triagensTable td:nth-child(6) {
+        display: none;
+    }
+
+    /* Botões de ação ocupam a largura toda no mobile */
+    .action-buttons {
+        flex-direction: column;
     }
 }
 
